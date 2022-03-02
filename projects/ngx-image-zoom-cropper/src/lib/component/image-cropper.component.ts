@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -15,6 +16,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { DomSanitizer, SafeStyle, SafeUrl } from '@angular/platform-browser';
+import SwiperCore, { SwiperOptions, Zoom } from 'swiper';
 import { CropperPosition, Dimensions, ImageCroppedEvent, ImageTransform, LoadedImage, MoveStart } from '../interfaces';
 import { OutputFormat } from '../interfaces/cropper-options.interface';
 import { CropperSettings } from '../interfaces/cropper.settings';
@@ -24,6 +26,7 @@ import { CropperPositionService } from '../services/cropper-position.service';
 import { LoadImageService } from '../services/load-image.service';
 import { HammerStatic } from '../utils/hammer.utils';
 import { getEventForKey, getInvertedPositionForKey, getPositionForKey } from '../utils/keyboard.utils';
+SwiperCore.use([Zoom])
 
 @Component({
   selector: 'image-cropper',
@@ -31,7 +34,7 @@ import { getEventForKey, getInvertedPositionForKey, getPositionForKey } from '..
   styleUrls: ['./image-cropper.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ImageCropperComponent implements OnChanges, OnInit {
+export class ImageCropperComponent implements OnChanges, OnInit, AfterViewInit {
   private Hammer: HammerStatic = (window as any)?.['Hammer'] || null;
   private settings = new CropperSettings();
   private setImageMaxSizeRetries = 0;
@@ -48,9 +51,16 @@ export class ImageCropperComponent implements OnChanges, OnInit {
   moveTypes = MoveTypes;
   imageVisible = false;
 
+  config: SwiperOptions = {
+    zoom: {
+      maxRatio: 5
+    }
+  }
+
   @ViewChild('wrapper', { static: true }) wrapper!: ElementRef<HTMLDivElement>;
   @ViewChild('sourceImage', { static: false }) sourceImage!: ElementRef<HTMLDivElement>;
-
+  @ViewChild('newSwiper') newSwiper: any;
+  
   @Input() imageChangedEvent?: any;
   @Input() imageURL?: string;
   @Input() imageBase64?: string;
@@ -87,6 +97,7 @@ export class ImageCropperComponent implements OnChanges, OnInit {
   @Input() alignImage: 'left' | 'center' = this.settings.alignImage;
   @HostBinding('class.disabled')
   @Input() disabled = false;
+  @Input() disabledCropper = false;
 
   @Output() imageCropped = new EventEmitter<ImageCroppedEvent>();
   @Output() startCropImage = new EventEmitter<void>();
@@ -102,6 +113,10 @@ export class ImageCropperComponent implements OnChanges, OnInit {
     private cd: ChangeDetectorRef
   ) {
     this.reset();
+  }
+
+  ngAfterViewInit(): void {
+    this.newSwiper?.swiperRef
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -344,14 +359,16 @@ export class ImageCropperComponent implements OnChanges, OnInit {
     if (event.preventDefault) {
       event.preventDefault();
     }
-    this.moveStart = {
-      active: true,
-      type: moveType,
-      position,
-      clientX: this.cropperPositionService.getClientX(event),
-      clientY: this.cropperPositionService.getClientY(event),
-      ...this.cropper
-    };
+    if (!this.disabledCropper) {
+      this.moveStart = {
+        active: true,
+        type: moveType,
+        position,
+        clientX: this.cropperPositionService.getClientX(event),
+        clientY: this.cropperPositionService.getClientY(event),
+        ...this.cropper
+      };
+    }
   }
 
   startPinch(event: any) {
@@ -361,14 +378,16 @@ export class ImageCropperComponent implements OnChanges, OnInit {
     if (event.preventDefault) {
       event.preventDefault();
     }
-    this.moveStart = {
-      active: true,
-      type: MoveTypes.Pinch,
-      position: 'center',
-      clientX: this.cropper.x1 + (this.cropper.x2 - this.cropper.x1) / 2,
-      clientY: this.cropper.y1 + (this.cropper.y2 - this.cropper.y1) / 2,
-      ...this.cropper
-    };
+    if (!this.disabledCropper) {
+      this.moveStart = {
+        active: true,
+        type: MoveTypes.Pinch,
+        position: 'center',
+        clientX: this.cropper.x1 + (this.cropper.x2 - this.cropper.x1) / 2,
+        clientY: this.cropper.y1 + (this.cropper.y2 - this.cropper.y1) / 2,
+        ...this.cropper
+      };
+    }
   }
 
   @HostListener('document:mousemove', ['$event'])

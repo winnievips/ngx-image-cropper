@@ -1,21 +1,27 @@
 <div [style.background]="imageVisible && backgroundColor"
      #wrapper
 >
-    <img
-      #sourceImage
-      class="ngx-ic-source-image"
-      *ngIf="safeImgDataUrl"
-      [src]="safeImgDataUrl"
-      [style.visibility]="imageVisible ? 'visible' : 'hidden'"
-      [style.transform]="safeTransformStyle"
-      (load)="imageLoadedInView()"
-    />
-    <div
+    <swiper [config]="config" #newSwiper>
+        <ng-template swiperSlide>
+            <div class="swiper-zoom-container">
+                <img
+                    #sourceImage
+                    class="ngx-ic-source-image"
+                    *ngIf="safeImgDataUrl"
+                    [src]="safeImgDataUrl"
+                    [style.visibility]="imageVisible ? 'visible' : 'hidden'"
+                    [style.transform]="safeTransformStyle"
+                    (load)="imageLoadedInView()"
+                />
+            </div>
+        </ng-template>
+    </swiper> 
+    <!-- <div
         class="ngx-ic-overlay"
         [style.width.px]="maxSize.width"
         [style.height.px]="maxSize.height"
         [style.margin-left]="alignImage === 'center' ? marginLeft : null"
-    ></div>
+    ></div> -->
     <div class="ngx-ic-cropper"
          *ngIf="imageVisible"
          [class.ngx-ic-round]="roundCropper"
@@ -28,7 +34,7 @@
          (keydown)="keyboardAccess($event)"
          tabindex="0"
     >
-        <div
+        <!-- <div
             (mousedown)="startMove($event, moveTypes.Move)"
             (touchstart)="startMove($event, moveTypes.Move)"
             class="ngx-ic-move">
@@ -82,6 +88,6 @@
                   (mousedown)="startMove($event, moveTypes.Resize, 'left')"
                   (touchstart)="startMove($event, moveTypes.Resize, 'left')">
             </span>
-        </ng-container>
+        </ng-container> -->
     </div>
 </div>
