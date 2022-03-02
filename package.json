@@ -1,18 +1,18 @@
 {
-  "name": "ngx-image-cropper-workspace",
+  "name": "ngx-image-zoom-cropper-workspace",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:lib": "ng build ngx-image-cropper --watch",
+    "start:lib": "ng build ngx-image-zoom-cropper --watch",
     "build": "ng build",
-    "build:lib": "ng build ngx-image-cropper",
-    "publish:lib": "npm run build:lib && npm run copy:files && npm publish ./dist/ngx-image-cropper",
-    "pack:lib": "npm pack ./projects/ngx-image-cropper",
-    "test": "ng test ngx-image-cropper",
-    "test:ci": "ng test ngx-image-cropper --bail",
+    "build:lib": "ng build ngx-image-zoom-cropper",
+    "publish:lib": "npm run build:lib && npm run copy:files && npm publish ./dist/ngx-image-zoom-cropper",
+    "pack:lib": "npm pack ./projects/ngx-image-zoom-cropper",
+    "test": "ng test ngx-image-zoom-cropper",
+    "test:ci": "ng test ngx-image-zoom-cropper --bail",
     "lint": "ng lint",
-    "copy:files": "cp ./README.md ./dist/ngx-image-cropper && cp ./LICENSE ./dist/ngx-image-cropper"
+    "copy:files": "cp ./README.md ./dist/ngx-image-zoom-cropper && cp ./LICENSE ./dist/ngx-image-zoom-cropper"
   },
   "private": true,
   "dependencies": {
@@ -25,6 +25,7 @@
     "@angular/platform-browser-dynamic": "~13.1.0",
     "@angular/router": "~13.1.0",
     "rxjs": "~7.4.0",
+    "swiper": "^8.0.6",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },

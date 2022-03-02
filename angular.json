@@ -3,23 +3,23 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-image-cropper": {
+    "ngx-image-zoom-cropper": {
       "projectType": "library",
-      "root": "projects/ngx-image-cropper",
-      "sourceRoot": "projects/ngx-image-cropper/src",
+      "root": "projects/ngx-image-zoom-cropper",
+      "sourceRoot": "projects/ngx-image-zoom-cropper/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/ngx-image-cropper/ng-package.json"
+            "project": "projects/ngx-image-zoom-cropper/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/ngx-image-cropper/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ngx-image-zoom-cropper/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/ngx-image-cropper/tsconfig.lib.json"
+              "tsConfig": "projects/ngx-image-zoom-cropper/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
